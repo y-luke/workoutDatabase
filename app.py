@@ -1,6 +1,6 @@
 import json
 
-from flask import Flask, jsonify
+from flask import Flask, request
 
 app = Flask(__name__)
 
@@ -15,7 +15,8 @@ def welcome():
 
 @app.route('/exercises', methods=['GET'])
 def get_exercises():
-    return jsonify(exercises)
+    if request.method == 'GET':
+        return json.dumps(exercises)
 
 
 if __name__ == '__main__':
