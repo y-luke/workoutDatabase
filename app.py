@@ -1,11 +1,14 @@
 import json
 
-from flask import Flask, request, render_template, url_for
+from flask import Flask, request, render_template, jsonify, url_for
 
 app = Flask(__name__)
 
 
-exercises = ['Burpees', 'Push-ups', 'Crunches', 'Squats']
+exercises = [{'name': 'Burpees', 'area': 'Cardio'},
+             {'name': 'Push-ups', 'area': 'Arms'},
+             {'name': 'Crunches', 'area': 'Core'},
+             {'name': 'Squats', 'area': 'Legs'}]
 
 
 @app.route('/')
@@ -16,7 +19,16 @@ def welcome():
 @app.route('/exercises', methods=['GET'])
 def get_exercises():
     if request.method == 'GET':
-        return json.dumps(exercises)
+        return jsonify(exercises)
+
+@app.route('/exercises/<string:name>', methods=['GET'])
+def get_one_exercise(name):
+    if request.method == 'GET':
+        one_exercise = exercises[0]
+        for i,q in enumerate(exercises):
+            if q['name'] == name:
+                one_exercise = exercises[i]
+        return jsonify(one_exercise)
 
 
 if __name__ == '__main__':
